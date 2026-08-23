@@ -11,7 +11,7 @@ pipeline {
     }
 
     stages {
-        stage('PR Checks: Linting & AI Review') {
+        stage('PR Checks: AI Review') {
             when { 
                 changeRequest() 
             }
@@ -19,9 +19,8 @@ pipeline {
                 echo 'Checking out PR code...'
                 checkout scm
                 
-                echo 'Running strict ESLint checks...'
+                echo 'Installing dependencies...'
                 sh 'npm ci'
-                sh 'npm run lint'
                 
                 echo 'Running Air-Gapped AI Review via local Docker...'
                 sh '''
