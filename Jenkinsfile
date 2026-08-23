@@ -1,22 +1,16 @@
 pipeline {
     agent any
     
-    // Kept from your original setup: uses Jenkins Node.js plugin
     tools {
-        nodejs 'Node16' // Ensures node/npm commands work inside Jenkins
+        nodejs 'Node16'
     }
 
     environment {
-        // Stored securely inside Jenkins Credentials Manager
         GITHUB_TOKEN = credentials('GITHUB_TOKEN')
         GEMINI_API_KEY = credentials('GEMINI_API_KEY')
     }
 
     stages {
-        
-        // =================================================================
-        // STAGE 1: PR GATEKEEPER (Runs ONLY when a PR is opened)
-        // =================================================================
         stage('PR Checks: Linting & AI Review') {
             when { 
                 changeRequest() 
@@ -41,9 +35,6 @@ pipeline {
             }
         }
 
-        // =================================================================
-        // STAGE 2: BUILD & DEPLOY (Runs ONLY after PR is merged to SIT)
-        // =================================================================
         stage('Compile & Deploy to SIT') {
             when { 
                 branch 'SIT' 
@@ -59,16 +50,8 @@ pipeline {
                 sh 'npm run build'
                 
                 echo 'Saving build output for JFrog...'
-                // Kept from your original setup
                 archiveArtifacts artifacts: 'dist/**/*', allowEmptyArchive: true
             }
-        }
-    }
-    
-    post {
-        always {
-            echo 'Pipeline execution finished.'
-            cleanWs()
         }
     }
 }
