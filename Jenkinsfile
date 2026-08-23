@@ -6,6 +6,7 @@ pipeline {
     }
 
     environment {
+        PATH = "/usr/local/bin:/opt/homebrew/bin:${env.PATH}"
         GITHUB_TOKEN = credentials('GITHUB_TOKEN')
         GEMINI_API_KEY = credentials('GEMINI_API_KEY')
     }
