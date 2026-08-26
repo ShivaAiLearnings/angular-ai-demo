@@ -13,8 +13,7 @@ interface UserProfile {
 export class AppComponent {
   title: string = "This is a string, not a number!"; 
  user: UserProfile = {
- id: 101,
-username: 'john_doe'
+ id: 101
  };
 }
 // test ai review
